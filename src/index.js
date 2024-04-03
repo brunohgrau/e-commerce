@@ -15,6 +15,9 @@ import Post from "./components/PostApp/Post.js";
 import SinglePostPage from "./screens/SinglePostPage.js";
 import HomeScreen from "./screens/HomeScreen.js";
 import LoginScreen from "./screens/LoginScreen.js";
+import CartScreen from "./screens/CartScreen.js";
+import Register from "./screens/RegisterScreen.js";
+import PaymentScreen from "./screens/PaymentScreen.js";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -22,6 +25,9 @@ const router = createBrowserRouter(
       <Route path="/" element={<HomeScreen />} />
       <Route path="/product/:productId" element={<SingleProductScreen />} />
       <Route path="/login" element={<LoginScreen />} />
+      <Route path="/cart" element={<CartScreen />} />
+      <Route path="/register" element={<Register />} />
+      <Route path="/payment" element={<PaymentScreen />} />
 
       <Route path="/post" element={<Post />} />
       <Route path="/post/:postId" element={<SinglePostPage />} />

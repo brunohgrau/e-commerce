@@ -1,10 +1,10 @@
 import React from "react";
-import Products from "../components/Products";
+import Posts from "../components/Posts";
 
 const HomeScreen = () => {
   return (
     <>
-      <Products />
+      <Posts />
     </>
   );
 };

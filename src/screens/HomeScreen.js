@@ -1,9 +1,12 @@
 import React from "react";
 // import Product from "../components/Product";
-import Post from "../components/Post";
+import Product from "../components/Product";
+
 
 const HomeScreen = () => {
-  return <></>;
+  return <>
+    <Product />
+  </>;
 };
 
 export default HomeScreen;

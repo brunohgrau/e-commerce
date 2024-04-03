@@ -51,7 +51,7 @@ const ProductScreen = () => {
           {/* Product Image */}
           <Grid item xs={12} md={4} sx={{ mt: 5 }}>
             <img
-              src="../../images/airpods.jpg"
+              src={product.image}
               alt="airpods"
               style={{ width: "350px", height: "300px", maxWidth: "100%" }} // Or use Material-UI styles
             />
@@ -83,23 +83,21 @@ const ProductScreen = () => {
             <Box sx={{ mt: 2 }}>
               <Typography variant="body1">Description</Typography>
               <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
-                It is a long established fact that a reader will be distracted
-                by the readable content of a page when looking at its layout.
-                The point of using Lorem Ipsum is that it has a more-or-less
+                {product.description}
               </Typography>
               <Box sx={{ mt: 2 }}>
                 <Typography
                   variant="body1"
                   sx={{ display: "flex", alignItems: "center" }}
                 >
-                  Brand:
+                  Brand
                   <Typography
                     variant="body2"
                     component="span"
                     color="text.secondary"
                     sx={{ ml: 1 }}
                   >
-                    Apple
+                    {product.brand}
                   </Typography>
                 </Typography>
               </Box>

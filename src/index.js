@@ -10,17 +10,19 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import store from "./store";
-import Product from "./components/Product.js";
 import SingleProductScreen from "./screens/SingleProductScreen.js";
-
 import Post from "./components/PostApp/Post.js";
 import SinglePostPage from "./screens/SinglePostPage.js";
+import HomeScreen from "./screens/HomeScreen.js";
+import LoginScreen from "./screens/LoginScreen.js";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<App />}>
-      <Route path="/product" element={<Product />} />
+      <Route path="/" element={<HomeScreen />} />
       <Route path="/product/:productId" element={<SingleProductScreen />} />
+      <Route path="/login" element={<LoginScreen />} />
+
       <Route path="/post" element={<Post />} />
       <Route path="/post/:postId" element={<SinglePostPage />} />
     </Route>

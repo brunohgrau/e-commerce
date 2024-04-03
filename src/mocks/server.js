@@ -64,6 +64,8 @@ export const db = factory({
 const createProductData = () => {
   return {
     id: faker.string.nanoid(),
+    description: faker.commerce.productDescription(),
+    brand: faker.company.name(),
     name: faker.commerce.productName(),
     price: faker.finance.amount(),
     numReviews: faker.number.int({ min: 0, max: 10 }),

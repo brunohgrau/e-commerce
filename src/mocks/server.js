@@ -6,45 +6,28 @@ import { faker } from "@faker-js/faker";
 const NUM_USERS = 3;
 const POSTS_PER_USER = 3;
 const RECENT_NOTIFICATIONS_DAYS = 7;
+const NUM_PRODUCTS = 5;
 
 const token = nanoid();
 
 /* MSW Data Model Setup */
 
 export const db = factory({
-  user: {
+  product: {
     id: primaryKey(nanoid),
-    firstName: String,
-    lastName: String,
     name: String,
-    username: String,
-    posts: manyOf("post"),
-  },
-  post: {
-    id: primaryKey(nanoid),
-    title: String,
-    date: String,
-    content: String,
-    reactions: oneOf("reaction"),
-    comments: manyOf("comment"),
-    user: oneOf("user"),
-  },
-  comment: {
-    id: primaryKey(String),
-    date: String,
-    text: String,
-    post: oneOf("post"),
-  },
-  reaction: {
-    id: primaryKey(nanoid),
-    thumbsUp: Number,
-    hooray: Number,
-    heart: Number,
-    rocket: Number,
-    eyes: Number,
-    post: oneOf("post"),
+    image: String,
+    description: String,
+    brand: String,
+    category: String,
+    price: Number,
+    countInStock: Number,
+    rating: Number,
+    numReviews: Number,
   },
 });
+
+/* 
 
 const createUserData = () => {
   const firstName = faker.person.firstName();
@@ -58,6 +41,24 @@ const createUserData = () => {
   };
 };
 
+*/
+
+const createProductData = (product) => {
+  return {
+    name: faker.lorem.words(),
+    image: faker.image.urlPicsumPhotos(),
+    description: faker.lorem.paragraphs(),
+    brand: faker.lorem.words(),
+    category: faker.lorem.words(),
+    price: faker.number.int(),
+    countInStock: faker.number.int(),
+    rating: faker.number.int({ min: 1, max: 5 }),
+    numReviews: faker.number.int({ min: 0, max: 5 }),
+  };
+};
+
+/*
+
 const createPostData = (user) => {
   return {
     title: faker.lorem.words(),
@@ -67,6 +68,10 @@ const createPostData = (user) => {
     reactions: db.reaction.create(),
   };
 };
+
+*/
+
+/*
 
 // Create an initial set of users and posts
 for (let i = 0; i < NUM_USERS; i++) {
@@ -78,16 +83,33 @@ for (let i = 0; i < NUM_USERS; i++) {
   }
 }
 
+
+*/
+
+for (let i = 0; i < NUM_PRODUCTS; i++) {
+  db.product.create(createProductData());
+}
+
+/*
+
 const serializePost = (post) => ({
   ...post,
   user: post.user.id,
 });
 
+*/
+
+const serializeProduct = (product) => ({
+  ...product,
+});
+
 /* MSW REST API Handlers */
 
 export const handlers = [
-  http.get("/fakeApi/posts", function () {
-    const posts = db.post.getAll().map(serializePost);
-    return HttpResponse.json(posts);
+  http.get("/fakeApi/product", function () {
+    //const posts = db.post.getAll().map(serializePost);
+    const products = db.product.getAll().map(serializeProduct);
+    //return HttpResponse.json(posts);
+    return HttpResponse.json(products);
   }),
 ];

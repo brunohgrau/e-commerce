@@ -8,12 +8,11 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Rating from "@mui/material/Rating";
 import Link from "@mui/material/Link";
-import products from "../mocks/products";
 import { useGetProductsQuery } from "../slices/apiSlice";
 
-const Products = () => {
-  const [value, setValue] = useState(2);
+const Product = () => {
   const { data: products = [] } = useGetProductsQuery();
+  const [value, setValue] = useState(2);
 
   return (
     <Container
@@ -54,12 +53,12 @@ const Products = () => {
             <Card sx={{ width: 250, mt: 5 }}>
               <CardMedia
                 sx={{ height: 140 }}
-                image="../../images/airpods.jpg"
+                image={product.image}
                 title="green iguana"
               />
               <CardContent>
                 <Typography gutterBottom variant="h6" component="div">
-                  <Link href="/details" color="text.primary">
+                  <Link href={`/product/${product.id}`} color="text.primary">
                     {product.name}
                   </Link>
                 </Typography>
@@ -77,11 +76,11 @@ const Products = () => {
                     color="text.secondary"
                     sx={{ ml: 2 }}
                   >
-                    1 Review
+                    {product.numReviews} Review
                   </Typography>
                 </Box>
                 <Typography variant="h4" color="text.secondary" sx={{ mt: 2 }}>
-                  $599
+                  {product.price}
                 </Typography>
               </CardContent>
             </Card>
@@ -92,4 +91,4 @@ const Products = () => {
   );
 };
 
-export default Products;
+export default Product;

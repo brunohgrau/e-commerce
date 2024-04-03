@@ -6,13 +6,6 @@ export const apiSlice = createApi({
   baseQuery,
   tagTypes: ["Products"],
   endpoints: (builder) => ({
-    getPosts: builder.query({
-      query: () => "/posts",
-      providesTags: (result = [], error, arg) => [
-        "Post",
-        ...result.map(({ id }) => ({ type: "Post", id })),
-      ],
-    }),
     getProducts: builder.query({
       query: () => "/products",
       providesTags: (result = [], error, arg) => [
@@ -20,7 +13,11 @@ export const apiSlice = createApi({
         ...result.map(({ id }) => ({ type: "Product", id })),
       ],
     }),
+    getProduct: builder.query({
+      query: (productId) => `/products/${productId}`,
+      providesTags: (result, error, arg) => [{ type: "Product", id: arg }],
+    }),
   }),
 });
 
-export const { useGetPostsQuery, useGetProductsQuery } = apiSlice;
+export const { useGetProductsQuery, useGetProductQuery } = apiSlice;

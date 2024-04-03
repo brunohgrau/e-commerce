@@ -1,10 +1,10 @@
 import React from "react";
-import Products from "../components/Products";
+import Product from "../components/Product";
 
 const HomeScreen = () => {
   return (
     <>
-      <Products />
+      <Product />
     </>
   );
 };

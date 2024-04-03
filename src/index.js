@@ -11,11 +11,13 @@ import {
 } from "react-router-dom";
 import store from "./store";
 import HomeScreen from "./screens/HomeScreen";
+import ProductScreen from "./screens/ProductScreen.js";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<App />}>
       <Route path="/" element={<HomeScreen />} />
+      <Route path="/product/:id" element={<ProductScreen />} />
     </Route>
   )
 );

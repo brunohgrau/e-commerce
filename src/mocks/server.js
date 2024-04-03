@@ -24,6 +24,14 @@ export const db = factory({
   product: {
     id: primaryKey(nanoid),
     name: String,
+    description: String,
+    brand: String,
+    category: String,
+    price: Number,
+    countInStock: Number,
+    rating: Number,
+    numReviews: Number,
+    image: String,
   },
   comment: {
     id: primaryKey(String),
@@ -42,33 +50,21 @@ export const db = factory({
   },
 });
 
-const createPostData = () => {
-  return {
-    title: faker.lorem.words(),
-    date: faker.date.recent({ days: RECENT_NOTIFICATIONS_DAYS }).toISOString(),
-    content: faker.lorem.paragraphs(),
-    reactions: db.reaction.create(),
-  };
-};
-
 const createProductData = () => {
   return {
     name: faker.commerce.productName(),
+    price: faker.finance.amount(),
+    numReviews: faker.number.int({ min: 0, max: 10 }),
+    image: faker.image.urlPicsumPhotos({ width: 300, height: 300 }),
   };
 };
 
 // Create an initial set of posts
 
 for (let j = 0; j < POSTS_PER_USER; j++) {
-  const newPost = createPostData();
-  db.post.create(newPost);
   const newProduct = createProductData();
   db.product.create(newProduct);
 }
-
-const serializePost = (post) => ({
-  ...post,
-});
 
 const serializeProduct = (product) => ({
   ...product,
@@ -77,12 +73,22 @@ const serializeProduct = (product) => ({
 /* MSW REST API Handlers */
 
 export const handlers = [
-  http.get("/fakeApi/posts", function () {
-    const posts = db.post.getAll().map(serializePost);
-    return HttpResponse.json(posts);
-  }),
   http.get("/fakeApi/products", function () {
     const products = db.product.getAll(serializeProduct);
     return HttpResponse.json(products);
+  }),
+  http.post("/fakeApi/products", async function ({ request }) {
+    const data = await request.json();
+
+    if (data.content === "error") {
+      return new HttpResponse(
+        JSON.stringify("Server error saving this post!"),
+        {
+          status: 500,
+        }
+      );
+    }
+    const product = db.product.create(data);
+    return HttpResponse.json(serializeProduct(product));
   }),
 ];

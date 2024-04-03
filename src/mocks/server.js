@@ -17,8 +17,8 @@ export const db = factory({
     title: String,
     date: String,
     content: String,
-    reactions: oneOf("reaction"),
-    comments: manyOf("comment"),
+    //reactions: oneOf("reaction"),
+    //comments: manyOf("comment"),
     //user: oneOf("user"),
   },
   product: {
@@ -51,15 +51,27 @@ const createPostData = () => {
   };
 };
 
+const createProductData = () => {
+  return {
+    name: faker.commerce.productName(),
+  };
+};
+
 // Create an initial set of posts
 
 for (let j = 0; j < POSTS_PER_USER; j++) {
   const newPost = createPostData();
   db.post.create(newPost);
+  const newProduct = createProductData();
+  db.product.create(newProduct);
 }
 
 const serializePost = (post) => ({
   ...post,
+});
+
+const serializeProduct = (product) => ({
+  ...product,
 });
 
 /* MSW REST API Handlers */
@@ -68,5 +80,9 @@ export const handlers = [
   http.get("/fakeApi/posts", function () {
     const posts = db.post.getAll().map(serializePost);
     return HttpResponse.json(posts);
+  }),
+  http.get("/fakeApi/products", function () {
+    const products = db.product.getAll(serializeProduct);
+    return HttpResponse.json(products);
   }),
 ];

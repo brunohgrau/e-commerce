@@ -1,10 +1,11 @@
 import React, { useMemo } from "react";
-import { useGetPostsQuery } from "../slices/apiSlice";
+import { useGetPostsQuery, useGetProductsQuery } from "../slices/apiSlice";
 import Container from "@mui/material/Container";
 import Grid from "@mui/system/Unstable_Grid/Grid";
 
 const Posts = () => {
   const { data: posts = [], error, isLoading } = useGetPostsQuery();
+  const { data: products = [] } = useGetProductsQuery();
   const sortedPosts = useMemo(() => {
     const sortedPosts = posts.slice();
     // Sort posts in descending chronological order
@@ -20,7 +21,13 @@ const Posts = () => {
     </article>
   ));
 
-  return <>{content}</>;
+  let content2 = products.map((product) => (
+    <article className="post-excerpt" key={product.id}>
+      <h3>Product Name {product.name}</h3>
+    </article>
+  ));
+
+  return <>{content2}</>;
 };
 
 export default Posts;

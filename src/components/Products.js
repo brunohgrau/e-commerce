@@ -9,9 +9,11 @@ import CardMedia from "@mui/material/CardMedia";
 import Rating from "@mui/material/Rating";
 import Link from "@mui/material/Link";
 import products from "../mocks/products";
+import { useGetProductsQuery } from "../slices/apiSlice";
 
 const Products = () => {
   const [value, setValue] = useState(2);
+  const { data: products = [] } = useGetProductsQuery();
 
   return (
     <Container
@@ -58,7 +60,7 @@ const Products = () => {
               <CardContent>
                 <Typography gutterBottom variant="h6" component="div">
                   <Link href="/details" color="text.primary">
-                    Product Name
+                    {product.name}
                   </Link>
                 </Typography>
 

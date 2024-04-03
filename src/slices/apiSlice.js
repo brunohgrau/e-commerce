@@ -4,7 +4,7 @@ const baseQuery = fetchBaseQuery({ baseUrl: "/fakeApi" });
 export const apiSlice = createApi({
   reducerPath: "api",
   baseQuery,
-  tagTypes: ["Products"],
+  tagTypes: ["Product", "Post"],
   endpoints: (builder) => ({
     getProducts: builder.query({
       query: () => "/products",
@@ -13,11 +13,29 @@ export const apiSlice = createApi({
         ...result.map(({ id }) => ({ type: "Product", id })),
       ],
     }),
+
     getProduct: builder.query({
       query: (productId) => `/products/${productId}`,
       providesTags: (result, error, arg) => [{ type: "Product", id: arg }],
     }),
+
+    getPosts: builder.query({
+      query: () => "/posts",
+      providesTags: (result = [], error, arg) => [
+        "Post",
+        ...result.map(({ id }) => ({ type: "Post", id })),
+      ],
+    }),
+    getPost: builder.query({
+      query: (postId) => `/posts/${postId}`,
+      providesTags: (result, error, arg) => [{ type: "Post", id: arg }],
+    }),
   }),
 });
 
-export const { useGetProductsQuery, useGetProductQuery } = apiSlice;
+export const {
+  useGetProductsQuery,
+  useGetProductQuery,
+  useGetPostsQuery,
+  useGetPostQuery,
+} = apiSlice;

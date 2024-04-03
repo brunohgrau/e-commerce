@@ -7,7 +7,7 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Rating from "@mui/material/Rating";
-import Link from "@mui/material/Link";
+import { Link } from "react-router-dom";
 import { useGetProductsQuery } from "../slices/apiSlice";
 
 const Product = () => {
@@ -58,7 +58,7 @@ const Product = () => {
               />
               <CardContent>
                 <Typography gutterBottom variant="h6" component="div">
-                  <Link href={`/product/${product.id}`} color="text.primary">
+                  <Link to={`/product/${product.id}`} color="text.primary">
                     {product.name}
                   </Link>
                 </Typography>
@@ -80,7 +80,7 @@ const Product = () => {
                   </Typography>
                 </Box>
                 <Typography variant="h4" color="text.secondary" sx={{ mt: 2 }}>
-                  {product.price}
+                  ${product.price}
                 </Typography>
               </CardContent>
             </Card>

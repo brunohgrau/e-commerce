@@ -12,14 +12,23 @@ const token = nanoid();
 /* MSW Data Model Setup */
 
 export const db = factory({
+  user: {
+    id: primaryKey(nanoid),
+    firstName: String,
+    lastName: String,
+    name: String,
+    username: String,
+    posts: manyOf("post"),
+  },
+
   post: {
     id: primaryKey(nanoid),
     title: String,
     date: String,
     content: String,
-    //reactions: oneOf("reaction"),
-    //comments: manyOf("comment"),
-    //user: oneOf("user"),
+    reactions: oneOf("reaction"),
+    comments: manyOf("comment"),
+    user: oneOf("user"),
   },
   product: {
     id: primaryKey(nanoid),
@@ -50,12 +59,37 @@ export const db = factory({
   },
 });
 
+// create functions to generate mock data
+
 const createProductData = () => {
   return {
+    id: faker.string.nanoid(),
     name: faker.commerce.productName(),
     price: faker.finance.amount(),
     numReviews: faker.number.int({ min: 0, max: 10 }),
     image: faker.image.urlPicsumPhotos({ width: 300, height: 300 }),
+  };
+};
+
+const createUserData = () => {
+  const firstName = faker.person.firstName();
+  const lastName = faker.person.lastName();
+
+  return {
+    firstName,
+    lastName,
+    name: `${firstName} ${lastName}`,
+    username: faker.internet.userName(),
+  };
+};
+
+const createPostData = (user) => {
+  return {
+    title: faker.lorem.words(),
+    date: faker.date.recent({ days: RECENT_NOTIFICATIONS_DAYS }).toISOString(),
+    user,
+    content: faker.lorem.paragraphs(),
+    reactions: db.reaction.create(),
   };
 };
 
@@ -65,6 +99,20 @@ for (let j = 0; j < POSTS_PER_USER; j++) {
   const newProduct = createProductData();
   db.product.create(newProduct);
 }
+
+for (let i = 0; i < NUM_USERS; i++) {
+  const author = db.user.create(createUserData());
+
+  for (let j = 0; j < POSTS_PER_USER; j++) {
+    const newPost = createPostData(author);
+    db.post.create(newPost);
+  }
+}
+
+const serializePost = (post) => ({
+  ...post,
+  user: post.user.id,
+});
 
 const serializeProduct = (product) => ({
   ...product,
@@ -77,18 +125,22 @@ export const handlers = [
     const products = db.product.getAll(serializeProduct);
     return HttpResponse.json(products);
   }),
-  http.post("/fakeApi/products", async function ({ request }) {
-    const data = await request.json();
+  http.get("/fakeApi/products/:productId", async function ({ params }) {
+    const product = db.product.findFirst({
+      where: { id: { equals: params.productId } },
+    });
 
-    if (data.content === "error") {
-      return new HttpResponse(
-        JSON.stringify("Server error saving this post!"),
-        {
-          status: 500,
-        }
-      );
-    }
-    const product = db.product.create(data);
     return HttpResponse.json(serializeProduct(product));
+  }),
+  http.get("/fakeApi/posts", function () {
+    const posts = db.post.getAll().map(serializePost);
+    return HttpResponse.json(posts);
+  }),
+  http.get("/fakeApi/posts/:postId", async function ({ params }) {
+    const post = db.post.findFirst({
+      where: { id: { equals: params.postId } },
+    });
+
+    return HttpResponse.json(serializePost(post));
   }),
 ];

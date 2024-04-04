@@ -40,13 +40,12 @@ const ProductScreen = () => {
   } else if (isSuccess) {
     content = (
       <Container id="product-details" sx={{ py: { xs: 16 } }}>
-        <Button
-          variant="contained"
-          startIcon={<ArrowBackOutlinedIcon />}
-          href="/"
-        >
-          Back
-        </Button>
+        <Link to="/">
+          <Button variant="contained" startIcon={<ArrowBackOutlinedIcon />}>
+            Back
+          </Button>
+        </Link>
+
         <Grid container spacing={1}>
           {/* Product Image */}
           <Grid item xs={12} md={4} sx={{ mt: 5 }}>

@@ -21,8 +21,9 @@ import DiamondIcon from "@mui/icons-material/Diamond";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import PersonIcon from "@mui/icons-material/Person";
 import SearchIcon from "@mui/icons-material/Search";
-import Link from "@mui/material/Link";
+
 import { LinkOutlined } from "@mui/icons-material";
+import { Link } from "react-router-dom";
 
 /*Search Component*/
 
@@ -131,8 +132,8 @@ const Header = () => {
             <Box sx={{ display: "flex", flexGrow: 1, alignItems: "center" }}>
               <DiamondIcon sx={{ mr: 1 }} />
               <Typography variant="h6" component="div">
-                <Link underline="none" href="/" color={"white"}>
-                  Shop Name
+                <Link underline="none" to="/" color={"white"}>
+                  <Button sx={{ color: "#fff" }}>Shop Name</Button>
                 </Link>
               </Typography>
             </Box>
@@ -156,17 +157,17 @@ const Header = () => {
                   <ShoppingCartIcon sx={{ mr: -2 }} />
                 </Badge>
               </IconButton>
+              <Link to="/cart">
+                <Button sx={{ color: "#fff" }}>Cart</Button>
+              </Link>
 
-              <Button sx={{ color: "#fff" }} href="/cart">
-                Cart
-              </Button>
               <IconButton sx={{ color: "#fff" }}>
                 <PersonIcon sx={{ mr: -2 }} />
               </IconButton>
 
-              <Button sx={{ color: "#fff" }} href="/login">
-                Sign In
-              </Button>
+              <Link to="/login">
+                <Button sx={{ color: "#fff" }}>Sign In</Button>
+              </Link>
             </Box>
             {/* Menu Icon*/}
             <IconButton

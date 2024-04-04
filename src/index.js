@@ -11,8 +11,6 @@ import {
 } from "react-router-dom";
 import store from "./store";
 import SingleProductScreen from "./screens/SingleProductScreen.js";
-import Post from "./components/PostApp/Post.js";
-import SinglePostPage from "./screens/SinglePostPage.js";
 import HomeScreen from "./screens/HomeScreen.js";
 import LoginScreen from "./screens/LoginScreen.js";
 import CartScreen from "./screens/CartScreen.js";
@@ -32,9 +30,6 @@ const router = createBrowserRouter(
       <Route path="/payment" element={<PaymentScreen />} />
       <Route path="/placeorder" element={<PlaceOrderScreen />} />
       <Route path="/order/:id" element={<OrderScreen />} />
-
-      <Route path="/post" element={<Post />} />
-      <Route path="/post/:postId" element={<SinglePostPage />} />
     </Route>
   )
 );

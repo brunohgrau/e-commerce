@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
@@ -6,14 +6,12 @@ import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
-import Rating from "@mui/material/Rating";
+import RatingComponent from "./RatingComponent";
 import { Link } from "react-router-dom";
 import { useGetProductsQuery } from "../slices/apiSlice";
-import RatingComponent from "./RatingComponent";
 
 const Product = () => {
   const { data: products = [] } = useGetProductsQuery();
-  const [value, setValue] = useState(2);
 
   return (
     <Container
@@ -55,7 +53,7 @@ const Product = () => {
               <CardMedia
                 sx={{ height: 140 }}
                 image={product.image}
-                title="green iguana"
+                title="product image"
               />
               <CardContent>
                 <Typography gutterBottom variant="h6" component="div">

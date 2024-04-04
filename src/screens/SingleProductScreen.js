@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
@@ -15,7 +15,7 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import TextField from "@mui/material/TextField";
 import { useGetProductQuery } from "../slices/apiSlice";
 import RatingComponent from "../components/RatingComponent";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 const style = {
   p: 0,
@@ -28,7 +28,7 @@ const style = {
 };
 
 const ProductScreen = () => {
-  const { productId } = useParams();
+  const { id: productId } = useParams();
   const {
     data: product,
     isFetching,
@@ -164,7 +164,7 @@ const ProductScreen = () => {
                       variant="body2"
                       color="text.primary"
                     >
-                      In Stock
+                      {product.countInStock > 0 ? "In Stock" : "Out of Stock"}
                     </Typography>
                   </ListItemText>
                 </ListItemButton>
@@ -200,7 +200,11 @@ const ProductScreen = () => {
               </ListItem>
               <Divider component="li" />
               <ListItem sx={{ mt: 2, mb: 2 }}>
-                <Button variant="contained" size="large">
+                <Button
+                  variant="contained"
+                  size="large"
+                  disabled={product.countInStock === 0}
+                >
                   Add to Cart
                 </Button>
               </ListItem>

@@ -72,6 +72,7 @@ const createProductData = () => {
     numReviews: faker.number.int({ min: 0, max: 10 }),
     image: faker.image.urlPicsumPhotos({ width: 300, height: 300 }),
     rating: faker.number.int({ min: 1, max: 5 }),
+    countInStock: faker.number.int({ min: 0, max: 10 }),
   };
 };
 

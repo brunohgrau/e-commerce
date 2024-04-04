@@ -18,6 +18,8 @@ import LoginScreen from "./screens/LoginScreen.js";
 import CartScreen from "./screens/CartScreen.js";
 import Register from "./screens/RegisterScreen.js";
 import PaymentScreen from "./screens/PaymentScreen.js";
+import PlaceOrderScreen from "./screens/PlaceOrderScreen.js";
+import OrderScreen from "./screens/OrderScreen.js";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -28,6 +30,8 @@ const router = createBrowserRouter(
       <Route path="/cart" element={<CartScreen />} />
       <Route path="/register" element={<Register />} />
       <Route path="/payment" element={<PaymentScreen />} />
+      <Route path="/placeorder" element={<PlaceOrderScreen />} />
+      <Route path="/order/:id" element={<OrderScreen />} />
 
       <Route path="/post" element={<Post />} />
       <Route path="/post/:postId" element={<SinglePostPage />} />
@@ -50,7 +54,4 @@ deferRender().then(() => {
   );
 });
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();

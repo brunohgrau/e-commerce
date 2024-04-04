@@ -165,7 +165,7 @@ const Header = () => {
               </IconButton>
 
               <Button sx={{ color: "#fff" }} href="/login">
-                Login
+                Sign In
               </Button>
             </Box>
             {/* Menu Icon*/}

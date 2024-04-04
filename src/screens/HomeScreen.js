@@ -1,12 +1,12 @@
 import React from "react";
-// import Product from "../components/Product";
 import Product from "../components/Product";
 
-
 const HomeScreen = () => {
-  return <>
-    <Product />
-  </>;
+  return (
+    <>
+      <Product />
+    </>
+  );
 };
 
 export default HomeScreen;

@@ -6,6 +6,7 @@ import { faker } from "@faker-js/faker";
 const NUM_USERS = 3;
 const POSTS_PER_USER = 5;
 const RECENT_NOTIFICATIONS_DAYS = 7;
+const PRODUCTS = 9;
 
 const token = nanoid();
 
@@ -33,6 +34,7 @@ export const db = factory({
   product: {
     id: primaryKey(nanoid),
     name: String,
+    image: String,
     description: String,
     brand: String,
     category: String,
@@ -40,7 +42,6 @@ export const db = factory({
     countInStock: Number,
     rating: Number,
     numReviews: Number,
-    image: String,
   },
   comment: {
     id: primaryKey(String),
@@ -97,7 +98,7 @@ const createPostData = (user) => {
 
 // Create an initial set of posts
 
-for (let j = 0; j < POSTS_PER_USER; j++) {
+for (let j = 0; j < PRODUCTS; j++) {
   const newProduct = createProductData();
   db.product.create(newProduct);
 }

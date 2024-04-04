@@ -9,6 +9,7 @@ import CardMedia from "@mui/material/CardMedia";
 import Rating from "@mui/material/Rating";
 import { Link } from "react-router-dom";
 import { useGetProductsQuery } from "../slices/apiSlice";
+import RatingComponent from "./RatingComponent";
 
 const Product = () => {
   const { data: products = [] } = useGetProductsQuery();
@@ -64,13 +65,7 @@ const Product = () => {
                 </Typography>
 
                 <Box sx={{ display: "flex", alignItems: "center" }}>
-                  <Rating
-                    name="simple-controlled"
-                    value={value}
-                    onChange={(event, newValue) => {
-                      setValue(newValue);
-                    }}
-                  />
+                  <RatingComponent value={product.rating} />
                   <Typography
                     variant="caption"
                     color="text.secondary"

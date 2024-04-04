@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
@@ -14,6 +14,7 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import TextField from "@mui/material/TextField";
 import { useGetProductQuery } from "../slices/apiSlice";
+import RatingComponent from "../components/RatingComponent";
 import { Link, useNavigate, useParams } from "react-router-dom";
 
 const style = {
@@ -64,11 +65,7 @@ const ProductScreen = () => {
             <Box sx={{ mt: 3 }}>
               <Divider />
               <Box sx={{ display: "flex", alignItems: "center" }}>
-                <Rating
-                  name="simple-controlled"
-                  value={3}
-                  sx={{ mt: 2, mb: 2 }}
-                />
+                <RatingComponent value={product.rating} />
                 <Typography
                   variant="caption"
                   color="text.secondary"

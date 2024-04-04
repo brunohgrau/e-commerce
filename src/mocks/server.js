@@ -130,9 +130,9 @@ export const handlers = [
     const products = db.product.getAll(serializeProduct);
     return HttpResponse.json(products);
   }),
-  http.get("/fakeApi/products/:productId", async function ({ params }) {
+  http.get("/fakeApi/products/:id", async function ({ params }) {
     const product = db.product.findFirst({
-      where: { id: { equals: params.productId } },
+      where: { id: { equals: params.id } },
     });
 
     return HttpResponse.json(serializeProduct(product));

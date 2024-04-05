@@ -29,16 +29,12 @@ const style = {
 
 const ProductScreen = () => {
   const { id: productId } = useParams();
-  const {
-    data: product,
-    isFetching,
-    isSuccess,
-  } = useGetProductQuery(productId);
+  const { data: product, isLoading, error } = useGetProductQuery(productId);
 
   let content;
-  if (isFetching) {
+  if (isLoading) {
     content = <p>Loading...</p>;
-  } else if (isSuccess) {
+  } else if (error) {
     content = (
       <Container id="product-details" sx={{ py: { xs: 16 } }}>
         <Link to="/">

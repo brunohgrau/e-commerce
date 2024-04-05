@@ -17,6 +17,7 @@ export const apiSlice = createApi({
 
     getProduct: builder.query({
       query: (id) => `/products/${id}`,
+      keepUnusedDataFor: 5,
       providesTags: (result, error, arg) => [{ type: "Product", id: arg }],
     }),
   }),

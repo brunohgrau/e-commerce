@@ -9,6 +9,8 @@ import CardMedia from "@mui/material/CardMedia";
 import RatingComponent from "./RatingComponent";
 import { Link } from "react-router-dom";
 import { useGetProductsQuery } from "../slices/apiSlice";
+import Loader from "./Loader";
+import Message from "./Message";
 
 const Product = () => {
   const { data: products = [], isLoading, error } = useGetProductsQuery();
@@ -16,9 +18,9 @@ const Product = () => {
   return (
     <>
       {isLoading ? (
-        <h2> Is Loading</h2>
+        <Loader />
       ) : error ? (
-        <h2>Error{error.data.message}</h2>
+        <Message />
       ) : (
         <Container
           fixed

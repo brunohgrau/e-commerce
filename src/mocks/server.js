@@ -95,6 +95,9 @@ const createUserData = () => {
     lastName,
     name: `${firstName} ${lastName}`,
     username: faker.internet.userName(),
+    password: faker.internet.password(),
+    email: faker.internet.email(),
+    isAdmin: true,
   };
 };
 
@@ -102,30 +105,23 @@ const createProductData = (user) => {
   return {
     id: faker.string.nanoid(),
     user,
-    description: faker.commerce.productDescription(),
-    brand: faker.company.name(),
     name: faker.commerce.productName(),
+    image: faker.image.urlPicsumPhotos({ width: 300, height: 300 }),
+    brand: faker.company.name(),
+    description: faker.commerce.productDescription(),
     price: faker.finance.amount(),
     numReviews: faker.number.int({ min: 0, max: 10 }),
-    image: faker.image.urlPicsumPhotos({ width: 300, height: 300 }),
     rating: faker.number.int({ min: 1, max: 5 }),
     countInStock: faker.number.int({ min: 0, max: 10 }),
   };
 };
 
-/*
-
-const createPostData = (user) => {
+const createOrderData = (user) => {
   return {
-    title: faker.lorem.words(),
-    date: faker.date.recent({ days: RECENT_NOTIFICATIONS_DAYS }).toISOString(),
+    id: faker.string.nanoid(),
     user,
-    content: faker.lorem.paragraphs(),
-    reactions: db.reaction.create(),
   };
 };
-
-*/
 
 // Create an initial set of posts
 
@@ -135,19 +131,6 @@ for (let j = 0; j < PRODUCTS; j++) {
   const newProduct = createProductData(author);
   db.product.create(newProduct);
 }
-
-/* 
-
-for (let i = 0; i < NUM_USERS; i++) {
-  const author = db.user.create(createUserData());
-
-  for (let j = 0; j < POSTS_PER_USER; j++) {
-    const newPost = createPostData(author);
-    db.post.create(newPost);
-  }
-}
-
-*/
 
 /*
 
@@ -166,10 +149,12 @@ const serializeProduct = (product) => ({
 /* MSW REST API Handlers */
 
 export const handlers = [
+  // @desc Fetch all products
   http.get("/fakeApi/products", function () {
     const products = db.product.getAll(serializeProduct);
     return HttpResponse.json(products);
   }),
+  // @desc Fetch product
   http.get("/fakeApi/products/:id", async function ({ params }) {
     const product = db.product.findFirst({
       where: { id: { equals: params.id } },

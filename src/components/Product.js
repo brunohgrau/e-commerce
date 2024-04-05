@@ -11,76 +11,88 @@ import { Link } from "react-router-dom";
 import { useGetProductsQuery } from "../slices/apiSlice";
 
 const Product = () => {
-  const { data: products = [] } = useGetProductsQuery();
+  const { data: products = [], isLoading, error } = useGetProductsQuery();
 
   return (
-    <Container
-      fixed
-      id="products"
-      sx={{
-        py: { xs: 16 },
-        position: "relative",
-        display: "flex",
-        flexDirection: "column",
-      }}
-    >
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: { xs: "center", sm: "start" },
-        }}
-      >
-        <Typography component="h2" variant="h4" color="text.primary">
-          Our Products
-        </Typography>
-      </Box>
-      <Grid container spacing={1}>
-        {products.map((product, index) => (
-          <Grid
-            item
-            xs={12}
-            sm={6}
-            md={3}
-            key={product.id}
+    <>
+      {isLoading ? (
+        <h2> Is Loading</h2>
+      ) : error ? (
+        <h2>Error{error.data.message}</h2>
+      ) : (
+        <Container
+          fixed
+          id="products"
+          sx={{
+            py: { xs: 16 },
+            position: "relative",
+            display: "flex",
+            flexDirection: "column",
+          }}
+        >
+          <Box
             sx={{
               display: "flex",
-              gap: { xs: 3, sm: 6 },
-              alignItems: "center",
               justifyContent: { xs: "center", sm: "start" },
             }}
           >
-            <Card sx={{ width: 250, mt: 5 }}>
-              <CardMedia
-                sx={{ height: 140 }}
-                image={product.image}
-                title="product image"
-              />
-              <CardContent>
-                <Typography gutterBottom variant="h6" component="div">
-                  <Link to={`/product/${product.id}`} color="text.primary">
-                    {product.name}
-                  </Link>
-                </Typography>
+            <Typography component="h2" variant="h4" color="text.primary">
+              Our Products
+            </Typography>
+          </Box>
+          <Grid container spacing={1}>
+            {products.map((product, index) => (
+              <Grid
+                item
+                xs={12}
+                sm={6}
+                md={3}
+                key={product.id}
+                sx={{
+                  display: "flex",
+                  gap: { xs: 3, sm: 6 },
+                  alignItems: "center",
+                  justifyContent: { xs: "center", sm: "start" },
+                }}
+              >
+                <Card sx={{ width: 250, mt: 5 }}>
+                  <CardMedia
+                    sx={{ height: 140 }}
+                    image={product.image}
+                    title="product image"
+                  />
+                  <CardContent>
+                    <Typography gutterBottom variant="h6" component="div">
+                      <Link to={`/product/${product.id}`} color="text.primary">
+                        {product.name}
+                      </Link>
+                    </Typography>
 
-                <Box sx={{ display: "flex", alignItems: "center" }}>
-                  <RatingComponent value={product.rating} />
-                  <Typography
-                    variant="caption"
-                    color="text.secondary"
-                    sx={{ ml: 2 }}
-                  >
-                    {product.numReviews} Review
-                  </Typography>
-                </Box>
-                <Typography variant="h4" color="text.secondary" sx={{ mt: 2 }}>
-                  ${product.price}
-                </Typography>
-              </CardContent>
-            </Card>
+                    <Box sx={{ display: "flex", alignItems: "center" }}>
+                      <RatingComponent value={product.rating} />
+                      <Typography
+                        variant="caption"
+                        color="text.secondary"
+                        sx={{ ml: 2 }}
+                      >
+                        {product.numReviews} Review
+                      </Typography>
+                    </Box>
+                    <Typography
+                      variant="h4"
+                      color="text.secondary"
+                      sx={{ mt: 2 }}
+                    >
+                      ${product.price}
+                    </Typography>
+                  </CardContent>
+                </Card>
+              </Grid>
+            ))}
           </Grid>
-        ))}
-      </Grid>
-    </Container>
+        </Container>
+      )}
+    </>
   );
 };
 

@@ -29,52 +29,50 @@ export const db = factory({
     user: oneOf("user"),
     name: String,
     image: String,
-    description: String,
     brand: String,
     category: String,
-    price: Number,
-    countInStock: Number,
+    description: String,
+    reviews: manyOf("review"),
     rating: Number,
     numReviews: Number,
-    reviews: manyOf("review"),
+    price: Number,
+    countInStock: Number,
   },
   order: {
     id: primaryKey(nanoid),
     user: oneOf("user"),
-    orderItems: manyOf("orderItem"),
-    shippingAddress: oneOf("shippingAddress"),
+    orderItems: {
+      orderItem: {
+        // id: primaryKey(nanoid),
+        name: String,
+        qty: Number,
+        image: String,
+        price: Number,
+        product: oneOf("product"),
+      },
+    },
+    shippingAddress: {
+      //id: primaryKey(nanoid),
+      address: String,
+      city: String,
+      postalCode: String,
+      country: String,
+    },
     paymentMethod: String,
-    paymenResult: oneOf("paymenResult"),
+    paymenResult: {
+      //id: primaryKey(nanoid),
+      status: String,
+      update_time: String,
+      email_address: String,
+    },
     itemsPrice: Number,
     taxPrice: Number,
     shippingPrice: Number,
     totalPrice: Number,
     isPaid: Boolean,
     paidAt: Date,
+    isDelivered: Boolean,
     deliveredAt: Date,
-  },
-
-  orderItem: {
-    id: primaryKey(nanoid),
-    name: String,
-    qty: Number,
-    image: String,
-    price: Number,
-    product: oneOf("product"),
-  },
-  shippingAddress: {
-    id: primaryKey(nanoid),
-    address: String,
-    city: String,
-    postalCode: String,
-    country: String,
-  },
-
-  paymenResult: {
-    id: primaryKey(nanoid),
-    status: String,
-    update_time: String,
-    email_address: String,
   },
 
   post: {
@@ -113,20 +111,6 @@ export const db = factory({
 
 // create functions to generate mock data
 
-const createProductData = () => {
-  return {
-    id: faker.string.nanoid(),
-    description: faker.commerce.productDescription(),
-    brand: faker.company.name(),
-    name: faker.commerce.productName(),
-    price: faker.finance.amount(),
-    numReviews: faker.number.int({ min: 0, max: 10 }),
-    image: faker.image.urlPicsumPhotos({ width: 300, height: 300 }),
-    rating: faker.number.int({ min: 1, max: 5 }),
-    countInStock: faker.number.int({ min: 0, max: 10 }),
-  };
-};
-
 const createUserData = () => {
   const firstName = faker.person.firstName();
   const lastName = faker.person.lastName();
@@ -139,6 +123,23 @@ const createUserData = () => {
   };
 };
 
+const createProductData = (user) => {
+  return {
+    id: faker.string.nanoid(),
+    user,
+    description: faker.commerce.productDescription(),
+    brand: faker.company.name(),
+    name: faker.commerce.productName(),
+    price: faker.finance.amount(),
+    numReviews: faker.number.int({ min: 0, max: 10 }),
+    image: faker.image.urlPicsumPhotos({ width: 300, height: 300 }),
+    rating: faker.number.int({ min: 1, max: 5 }),
+    countInStock: faker.number.int({ min: 0, max: 10 }),
+  };
+};
+
+/*
+
 const createPostData = (user) => {
   return {
     title: faker.lorem.words(),
@@ -149,12 +150,18 @@ const createPostData = (user) => {
   };
 };
 
+*/
+
 // Create an initial set of posts
 
 for (let j = 0; j < PRODUCTS; j++) {
-  const newProduct = createProductData();
+  const author = db.user.create(createUserData());
+
+  const newProduct = createProductData(author);
   db.product.create(newProduct);
 }
+
+/* 
 
 for (let i = 0; i < NUM_USERS; i++) {
   const author = db.user.create(createUserData());
@@ -165,13 +172,20 @@ for (let i = 0; i < NUM_USERS; i++) {
   }
 }
 
+*/
+
+/*
+
 const serializePost = (post) => ({
   ...post,
   user: post.user.id,
 });
 
+*/
+
 const serializeProduct = (product) => ({
   ...product,
+  user: product.user.id,
 });
 
 /* MSW REST API Handlers */
@@ -187,16 +201,5 @@ export const handlers = [
     });
 
     return HttpResponse.json(serializeProduct(product));
-  }),
-  http.get("/fakeApi/posts", function () {
-    const posts = db.post.getAll().map(serializePost);
-    return HttpResponse.json(posts);
-  }),
-  http.get("/fakeApi/posts/:postId", async function ({ params }) {
-    const post = db.post.findFirst({
-      where: { id: { equals: params.postId } },
-    });
-
-    return HttpResponse.json(serializePost(post));
   }),
 ];

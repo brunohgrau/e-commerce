@@ -22,7 +22,7 @@ export const db = factory({
     email: String,
     password: String,
     isAdmin: Boolean,
-    posts: manyOf("post"),
+    products: manyOf("product"),
   },
   product: {
     id: primaryKey(nanoid),
@@ -75,31 +75,6 @@ export const db = factory({
     deliveredAt: Date,
   },
 
-  post: {
-    id: primaryKey(nanoid),
-    title: String,
-    date: String,
-    content: String,
-    reactions: oneOf("reaction"),
-    comments: manyOf("comment"),
-    user: oneOf("user"),
-  },
-
-  comment: {
-    id: primaryKey(String),
-    date: String,
-    text: String,
-    post: oneOf("post"),
-  },
-  reaction: {
-    id: primaryKey(nanoid),
-    thumbsUp: Number,
-    hooray: Number,
-    heart: Number,
-    rocket: Number,
-    eyes: Number,
-    post: oneOf("post"),
-  },
   review: {
     id: primaryKey(nanoid),
     user: oneOf("user"),
